@@ -1,3 +1,4 @@
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -43,30 +44,30 @@ unidade_1 = "M m\u00b3"
 
 unidade_2 = "x10\u00b3 m\u00b3"
 
-file_path_freg = "data/Freguesias_agua_potavel.xlsx"
+file_path_freg = "data/en/Freguesias_agua_potavel.xlsx"
 # file_path_freg_dom = 'data/Freguesias_domestico_agua_potavel.xlsx'
-file_path_sector = "data/sector.xlsx"
+file_path_sector = "data/en/sector.xlsx"
 file_path_freg_center = 'data/freguesias_centro.csv'
-file_path_ndom = "data/nao_domestico.xlsx"
-file_path_balanco_geral = "data/Balanco_geral.xlsx"
-file_path_balanco_potavel = "data/Balanco_potavel.xlsx"
-file_path_bal_potavel_ts = "data/bal_potavel_ts.xlsx"
-file_path_ar = "data/aguas_residuais.xlsx"
+file_path_ndom = "data/en/nao_domestico.xlsx"
+file_path_balanco_geral = "data/en/Balanco_geral.xlsx"
+file_path_balanco_potavel = "data/en/Balanco_potavel.xlsx"
+file_path_bal_potavel_ts = "data/en/bal_potavel_ts.xlsx"
+file_path_ar = "data/en/aguas_residuais.xlsx"
 file_path_ar_centro = "data/ar_centro.xlsx"
-file_path_ar_reu = "data/ar_reutilizadas.xlsx"
+file_path_ar_reu = "data/en/ar_reutilizadas.xlsx"
 
 df_fregs = pd.read_excel(file_path_freg)
 # df_fregs_dom = pd.read_excel(file_path_freg_dom)
 
 freg_center = pd.read_csv(file_path_freg_center, encoding='utf-8')
-sector_df = pd.read_excel(file_path_sector, index_col='Ano')
-ndom_df = pd.read_excel(file_path_ndom, index_col='Ano')
-bal_potavel_df = pd.read_excel(file_path_balanco_potavel, index_col='Ano')
-bal_pot_ts_df = pd.read_excel(file_path_bal_potavel_ts, index_col='Ano')
-aguas_r_df = pd.read_excel(file_path_ar, index_col='Ano')
+sector_df = pd.read_excel(file_path_sector, index_col='Year')
+ndom_df = pd.read_excel(file_path_ndom, index_col='Year')
+bal_potavel_df = pd.read_excel(file_path_balanco_potavel, index_col='Year')
+bal_pot_ts_df = pd.read_excel(file_path_bal_potavel_ts, index_col='Year')
+aguas_r_df = pd.read_excel(file_path_ar, index_col='Year')
 ar_centro_df = pd.read_excel(file_path_ar_centro)
-ar_reu_df = pd.read_excel(file_path_ar_reu, index_col='Ano')
-perc_ndom = ((ndom_df['Total'] / 1000) / (sector_df['Total'] - sector_df['Perdas económicas'])) * 100
+ar_reu_df = pd.read_excel(file_path_ar_reu, index_col='Year')
+perc_ndom = ((ndom_df['Total'] / 1000) / (sector_df['Total'] - sector_df['Economic Losses'])) * 100
 anos_cons = sector_df.index.unique().tolist()
 anos_ar = aguas_r_df.index.unique().tolist()
 anos_bal = bal_potavel_df.index.unique().tolist()
@@ -83,98 +84,100 @@ color_live = ["#8DD3C7", "#fff069", "#BEBADA", "#FB8072", "#80B1D3", "#FDB462", 
 color_dead = ["#96ebde", "#f7efa6", "#c1bae8", "#f0ada5", "#a7d0eb", "#f0c595", "#d4f0a3", "#e691e0", "#9595e8",
               "#90e8ab", "#f0e79e"]
 
-color_sector_live_d = {"Doméstico": color_live[0],
-                       "Comércio e Indústria": color_live[1],
-                       "Instituições": color_live[2],
-                       "Estado e embaixadas": color_live[3],
-                       "Câmara Municipal de Lisboa": color_live[4],
-                       "Juntas de Freguesia": color_live[5],
-                       "Perdas económicas": color_live[6],
+
+
+color_sector_live_d = {"Domestic": color_live[0],
+                       "Trade and Industry": color_live[1],
+                       "Institutions": color_live[2],
+                       "State and Embassies": color_live[3],
+                       "Lisbon Municipality": color_live[4],
+                       "Parish Councils": color_live[5],
+                       "Economic Losses": color_live[6],
                        "Total": "#8F9090",
-                       "Doméstico Per Capita": color_live[7]
+                       "Domestic Per Capita": color_live[7]
                        }
 
-color_sector_dead_d = {"Doméstico": color_dead[0],
-                       "Comércio e Indústria": color_dead[1],
-                       "Instituições": color_dead[2],
-                       "Estado e embaixadas": color_dead[3],
-                       "Câmara Municipal de Lisboa": color_dead[4],
-                       "Juntas de Freguesia": color_dead[5],
-                       "Perdas económicas": color_dead[6],
+color_sector_dead_d = {"Domestic": color_dead[0],
+                       "Trade and Industry": color_dead[1],
+                       "Institutions": color_dead[2],
+                       "State and Embassies": color_dead[3],
+                       "Lisbon Municipality": color_dead[4],
+                       "Parish Councils": color_dead[5],
+                       "Economic Losses": color_dead[6],
                        "Total": "#8F9090",
-                       "Doméstico Per Capita": color_dead[7]
+                       "Domestic Per Capita": color_dead[7]
                        }
 
 color_ndom_live_d = {
-    "CML  + Delegações CML": color_live[0],
-    "Restauração e Hotelaria": color_live[1],
-    "Saúde": color_live[2],
-    "Escritórios": color_live[3],
-    "Instituições/Organ.Públicos/Instit. Militares": color_live[4],
-    "Cultura, Lazer e Recreio": color_live[5],
-    "Estabelecimentos e Centros Comerciais": color_live[6],
-    "Ensino (Escolas/Universidades)": color_live[7],
-    "Consumo Habitacional": color_live[8],
-    "Outros": color_live[9],
+    "Lisbon Municipality + Delegations": color_live[0],
+    "Hotel and Restaurant": color_live[1],
+    "Health": color_live[2],
+    "Offices": color_live[3],
+    "Institutions": color_live[4],
+    "Culture": color_live[5],
+    "Shops and Shooping Centers": color_live[6],
+    "Education": color_live[7],
+    "Housing Consumption": color_live[8],
+    "Other": color_live[9],
     "Total": "#8F9090"
 
 }
 
 color_ndom_dead_d = {
-    "CML  + Delegações CML": color_dead[0],
-    "Restauração e Hotelaria": color_dead[1],
-    "Saúde": color_dead[2],
-    "Escritórios": color_dead[3],
-    "Instituições/Organ.Públicos/Instit. Militares": color_dead[4],
-    "Cultura, Lazer e Recreio": color_dead[5],
-    "Estabelecimentos e Centros Comerciais": color_dead[6],
-    "Ensino (Escolas/Universidades)": color_dead[7],
-    "Consumo Habitacional": color_dead[8],
-    "Outros": color_dead[9],
+    "Lisbon Municipality + Delegations": color_dead[0],
+    "Hotel and Restaurant": color_dead[1],
+    "Health": color_dead[2],
+    "Offices": color_dead[3],
+    "Institutions": color_dead[4],
+    "Culture": color_dead[5],
+    "Shops and Shooping Centers": color_dead[6],
+    "Education": color_dead[7],
+    "Housing Consumption": color_dead[8],
+    "Other": color_dead[9],
     "Total": "#8F9090"
 
 }
 
-color_balanco_live_d = {"Água utilizada em Lisboa": color_live[0],
-                        "Água consumida em Lisboa": color_live[1],
-                        "Perdas económicas": color_live[2],
-                        "Perdas reais": color_live[3],
-                        "Entrega a outros municípios": color_live[4],
-                        "Água para consumo humano": color_live[5],
+color_balanco_live_d = {"Water used in Lisbon": color_live[0],
+                        "Water consumed in Lisbon": color_live[1],
+                        "Economic losses": color_live[2],
+                        "Real losses": color_live[3],
+                        "Delivery to other municipalities": color_live[4],
+                        "Drinking Water": color_live[5],
                         }
 
-color_balanco_dead_d = {"Água utilizada em Lisboa": color_dead[0],
-                        "Água consumida em Lisboa": color_dead[1],
-                        "Perdas económicas": color_dead[2],
-                        "Perdas reais": color_dead[3],
-                        "Entrega a outros municípios": color_dead[4],
-                        "Água para consumo humano": color_dead[5],
+color_balanco_dead_d = {"Water used in Lisbon": color_dead[0],
+                        "Water consumed in Lisbon": color_dead[1],
+                        "Economic losses": color_dead[2],
+                        "Real losses": color_dead[3],
+                        "Delivery to other municipalities": color_dead[4],
+                        "Drinking Water": color_dead[5],
                         }
 
 color_ar_live_d = {
     "Alcântara": color_live[0],
     "Beirolas": color_live[7],
     "Chelas": color_live[2],
-    "Total - Água Tratada": "#8F9090",
-    "Água reutilizada internamente pela AdTA": color_live[6],
-    "Água reutilizada pela CML e JF": color_live[8],
-    "Total - Água Reutilizada": "#8F9090",
+    "Total - Treated Water": "#8F9090",
+    "Water reused internally by AdTA": color_live[6],
+    "Water reused by Lisbon Municipality and Parish Councils": color_live[8],
+    "Total - Reclaimed Water": "#8F9090",
 }
 
 color_ar_dead_d = {
     "Alcântara": color_dead[0],
     "Beirolas": color_dead[7],
     "Chelas": color_dead[2],
-    "Total - Água Tratada": "#8F9090",
-    "Água reutilizada internamente pela AdTA": color_dead[6],
-    "Água reutilizada pela CML e JF": color_dead[8],
-    "Total - Água Reutilizada": "#8F9090",
+    "Total - Treated Water": "#8F9090",
+    "Water reused internally by AdTA": color_dead[6],
+    "Water reused by Lisbon Municipality and Parish Councils": color_dead[8],
+    "Total - Reclaimed Water": "#8F9090",
 }
 
 sector_options = [{'label': sect,
                    'value': str(sect_val)}
                   for sect, sect_val in zip(sector_df.columns.to_list(), sector_df.columns.to_list())]
-sector_options = sector_options + [{'label': 'Doméstico Per Capita', 'value': 'Doméstico Per Capita'}]
+sector_options = sector_options + [{'label': 'Domestic Per Capita', 'value': 'Domestic Per Capita'}]
 sector_options = sorted(sector_options, key=lambda k: k['label'])
 
 ndom_options = [{'label': sect,
@@ -186,14 +189,14 @@ bal_pot_options = [{'label': sect,
                    for sect, sect_val in zip(list(bal_potavel_df.Ordem.unique()), list(bal_potavel_df.Ordem.unique()))]
 
 ar_labels = [
-    "Alcântara - Água Tratada", "Beirolas - Água Tratada", "Chelas - Água Tratada", "Total - Água Tratada",
-    "Total - Água Reutilizada", 'Água reutilizada internamente pela AdTA', 'Água reutilizada pela CML e JF']
-ar_values = list(aguas_r_df.Subsistema.unique()) + list(ar_reu_df.Subsistema.unique())
+    "Alcântara - Treated Water", "Beirolas - Treated Water", "Chelas - Treated Water", "Total - Treated Water",
+    "Total - Reclaimed Water", 'Water reused internally by AdTA', 'Water reused by Lisbon Municipality and Parish Councils']
+ar_values = list(aguas_r_df.Plant.unique()) + list(ar_reu_df.Plant.unique())
 ar_options = [{'label': sect,
                'value': str(sect_val)}
               for sect, sect_val in zip(ar_labels, ar_values)]
 
-ar_totais = pd.concat([aguas_r_df.drop(['Lisboa', 'Outros Concelhos', 'lis_perc', 'out_perc'], axis=1), ar_reu_df])
+ar_totais = pd.concat([aguas_r_df.drop(['Lisbon', 'Other Municipalities', 'lis_perc', 'out_perc'], axis=1), ar_reu_df])
 ar_totais.sort_index(inplace=True)
 
 with open("data/Freguesias2012/Freguesias2012") as geofile:
@@ -262,7 +265,7 @@ class Pessoas(db.Model):
 # ])
 
 nomes = ['consumo', 'freg', 'ar', 'bal']
-headers = ['Consumo de Água Potável', 'Consumo de Água Potável por Freguesia', 'Águas Residuais', 'Balanço de Água']
+headers = ['Drinking Water Consumption', 'Drinking Water Consumption per Parish Council', 'Wastewater', 'Water Balance']
 id_m = ['modal-consumo', 'modal-freg', 'modal-ar', 'modal-bal']
 id_l = ['link-file-consumo', 'link-file-freg', 'link-file-ar', 'link-file-bal']
 id_c = ['close-consumo', 'close-freg', 'close-ar', 'close-bal']
@@ -375,9 +378,7 @@ collapse_side_cons = html.Div(
         dbc.Collapse(
             dbc.Card(dbc.CardBody(
                 dcc.Markdown('''
-                _O consumo anual apresentado inclui também as **perdas económicas** (ou aparentes)._ 
-
-
+                _The annual consumption also includes ** economic losses ** (or apparent)._
                 '''),
                 id='info-cons'),
                 # style= {'font-style': 'italic'}
@@ -386,6 +387,7 @@ collapse_side_cons = html.Div(
         ),
     ], style={'font-family': family_generico, 'margin-bottom': '2%'},
 )
+
 pop_radio = html.Div(dcc.RadioItems(
     options=[
         {"label": "Total", "value": 1},
@@ -400,9 +402,9 @@ side_bar_cons = html.Div(
     [
         pop_radio,
         html.Hr(className='blurb2'),
-        html.H6('Consumo Total Anual de Água, em Lisboa ({})'.format(unidade),
+        html.H6('Total Annual Water Consumption, in Lisbon ({})'.format(unidade),
                 style=TITLE_STYLE, id='head-ano-bar-cons'),
-        html.P(dcc.Markdown('''**Seleccione o ano pretendido:**'''), style=INSTRUCTION_STYLE_center),
+        html.P(dcc.Markdown('''**Select Year:**'''), style=INSTRUCTION_STYLE_center),
 
         html.Div(
             [create_year_button(ano, 'cons', anos_cons, 'bt-cons') for ano in anos_cons[:-1]] + [
@@ -432,9 +434,9 @@ side_bar_cons = html.Div(
 
 side_bar_bal = html.Div(
     [
-        dbc.Row(html.H6('Consumo Total Anual de Água, em Lisboa ({})'.format(unidade),
+        dbc.Row(html.H6('Total Annual Water Consumption, in Lisbon ({})'.format(unidade),
                         style=TITLE_STYLE), align="center", justify="center"),
-        html.P(dcc.Markdown('''**Seleccione o ano pretendido:**'''), style=INSTRUCTION_STYLE_center),
+        html.P(dcc.Markdown('''**Select Year:**'''), style=INSTRUCTION_STYLE_center),
         html.Div(
             [create_year_button(ano, 'bal', anos_bal, 'bt-bal') for ano in anos_bal[:-1]] + [
                 create_year_button_last(anos_bal[-1], 'bal', anos_bal, 'bt-bal')],
@@ -462,9 +464,9 @@ side_bar_bal = html.Div(
 side_bar_ar = html.Div(
     [
 
-        dbc.Row(html.H6('Total Anual de Água Residual Tratada, em Lisboa ({})'.format(unidade),
+        dbc.Row(html.H6('Total Annual Treated Waste Water, in Lisbon ({})'.format(unidade),
                         style=TITLE_STYLE), align="center", justify="center"),
-        html.P(dcc.Markdown('''**Seleccione o ano pretendido:**'''), style=INSTRUCTION_STYLE_center),
+        html.P(dcc.Markdown('''**Select Year:**'''), style=INSTRUCTION_STYLE_center),
         html.Div(
             [create_year_button(ano, 'ar', anos_ar, 'bt-ar') for ano in anos_ar[:-1]] + [
                 create_year_button_last(anos_ar[-1], 'ar', anos_ar, 'bt-ar')],
@@ -517,7 +519,7 @@ download_button_freg = html.Div(
             id='link-dummy'
         ),
         dbc.Tooltip(
-            "Download dos Consumos de água potável (doméstico e total), número de contadores e número de smartmeters, por freguesia (.xlsx).",
+            "Download of drinking water consumption (domestic and total), water meters and smartwaters per parish council (.xlsx).",
             target="target-freg", style={'font-size': '1.4rem'}),
     ],
     className="p-3 text-muted")
@@ -540,13 +542,13 @@ freg_container = html.Div([
 
     html.Div([dbc.Row([
         dbc.Col([
-            html.P(dcc.Markdown('''**Filtrar por Freguesia:**'''), style=INSTRUCTION_STYLE_center),
+            html.P(dcc.Markdown('''**Select for each parish council:**'''), style=INSTRUCTION_STYLE_center),
             dcc.Dropdown(
                 id='drop-freg',
                 options=[
-                    {'label': 'Consumo Total de Água Potável', 'value': 'consumo_total'},
-                    {'label': 'Consumo Doméstico de Água Potável', 'value': 'consumo_dom'},
-                    {'label': 'Contadores', 'value': 'contadores'},
+                    {'label': 'Total Drinking Water Consumption', 'value': 'consumo_total'},
+                    {'label': 'Domestic Drinking Water Consumption', 'value': 'consumo_dom'},
+                    {'label': 'Water Meters', 'value': 'contadores'},
                     {'label': 'Smartmeters', 'value': 'smartmeters'}],
                 value='consumo_total',
                 clearable=False,
@@ -607,6 +609,7 @@ collapse_donut = html.Div(
         ),
     ], style={'font-family': family_generico, 'margin-bottom': '2%'},
 )
+
 donut_container = html.Div(
     [
         # , tanks
@@ -624,7 +627,7 @@ info_button_consumo = html.Div(
     [
         html.I(className="fas fa-question-circle fa-sm", id="target"),
         dbc.Tooltip(
-            "O consumo de água potável em Lisboa pode ser desagregado de várias formas. Nesta matriz, apresenta-se o consumo de água potável por sector de consumo e por consumo não doméstico.",
+            "Drinking water consumption in Lisbon can be unbundled in different ways. Here, drinking water is segregated by sector and non-domestic consumption.",
             target="target", style={'font-size': '1.4rem'}),
     ],
     className="p-2 text-muted"
@@ -648,8 +651,8 @@ ano_line_container = html.Div(
             dbc.Col(
                 dcc.RadioItems(
                     options=[
-                        {"label": "Todos", "value": "Todos"},
-                        {"label": "Personalizado", "value": "Personalizado"},
+                        {"label": "Select All", "value": "Todos"},
+                        {"label": "Custom", "value": "Personalizado"},
                         {"label": "Total", "value": "Total"},
                     ],
                     value="Personalizado",
@@ -662,7 +665,7 @@ ano_line_container = html.Div(
             ),
             dbc.Col(
                 dcc.Dropdown(
-                    value="Doméstico",
+                    value="Domestic",
                     id='drop-ano-line',
                     clearable=False,
                     multi=True,
@@ -689,7 +692,8 @@ download_button_consumo = html.Div(
             id='link-dummy'
         ),
         dbc.Tooltip(
-            "Download do Consumo de água potável, por sector e por consumo não doméstico (.xlsx).",
+
+            "Drinking water download, per sector and non-domestic consumption (.xlsx)",
             target="target-consumo", style={'font-size': '1.4rem'}),
     ],
 
@@ -698,7 +702,7 @@ download_button_consumo = html.Div(
 header_consumo = html.Div([
     dbc.Row([
         dbc.Col(html.Hr(), style={'width': 'inherit'}, width=2, align="center", className='blurb'),
-        dbc.Col(dbc.Row([html.H6("Consumo de Água Potável",
+        dbc.Col(dbc.Row([html.H6("Drinking Water Consumption",
                                  style={'textAlign': 'Center', 'font-family': family_generico}),
                          info_button_consumo, download_button_consumo], align="center", justify="center",
                         no_gutters=True), md=5, align="center"),
@@ -709,12 +713,12 @@ header_consumo = html.Div([
     dbc.Row([
         # dbc.Col([html.Div(className='vl', style={'height': 'inherit'})]),
         dbc.Col([
-            html.P(dcc.Markdown('''**Seleccione a desagregação pretendida:**'''), style=INSTRUCTION_STYLE_center),
+            html.P(dcc.Markdown('''**Select disaggregation:**'''), style=INSTRUCTION_STYLE_center),
             dcc.Dropdown(
                 id='drop-cons',
                 options=[
-                    {'label': 'Consumo por Sector', 'value': 'consumo_sector'},
-                    {'label': 'Consumo não Doméstico', 'value': 'ndom'},
+                    {'label': 'Per Sector', 'value': 'consumo_sector'},
+                    {'label': 'Non-Domestic', 'value': 'ndom'},
                 ],
                 value='consumo_sector',
                 clearable=False,
@@ -761,7 +765,7 @@ tab_consumo = html.Div(
         ]),
         modal_cons,
         modal_freg,
-        html.Div(html.P('Dados disponibilizados pela EPAL e pela Águas do Tejo Atlântico (ADTA).',
+        html.Div(html.P('Data made available by EPAL and Águas do Tejo Atlântico (ADTA).',
                         style=INSTRUCTION_STYLE_left_cons))
 
     ], style={'margin-top': '0.8%'}
@@ -780,11 +784,10 @@ collapse_bal = html.Div(
         dbc.Collapse(
             dbc.Card(dbc.CardBody(
                 dcc.Markdown('''
-                _De toda a água potável que entra na cidade de Lisboa (Água para consumo humano) parte é entregue a outros municípios e a restante é utilizida na capital._ 
-
-                _Da água utilizada na cidade, existem dois tipos de perdas principais:_
-                * _**Perdas físicas ou reais**: traduzem a água realmente perdida na sequência de fugas e/ou roturas na rede de distribuição; _
-                * _**Perdas aparentes ou económicas**: resultantes de consumos não autorizados, fornecimentos não medidos e erros de medição. _                
+                _Out of all incoming drinking water in Lisbon, some is transferred to other municipalities and some is used in the city._
+                _In the city, there are two main water losses types:_
+                * _**Real or physical losses**: Water lost due to leaks or ruptures in the distribution network; _
+                * _** Apparent or economic water losses**: Water lost due to non-authorized consumption, non-metered water delivery and measurement errors. _                              
                 '''),
                 id='info-bal'),
                 # style= {'font-style': 'italic'}
@@ -805,7 +808,7 @@ download_button_balanco = html.Div(
             id='link-dummy'
         ),
         dbc.Tooltip(
-            "Download do balanço de água potável em Lisboa (.xlsx).",
+            "Drinking water balance in Lisbon download (.xlsx).",
             target="target-bal", style={'font-size': '1.4rem'}),
     ],
 
@@ -831,7 +834,7 @@ bal_container = html.Div([
                             children=dcc.Graph(
                                 figure={'layout': {'autosize': True}}, id='bal-potavel',
                                 hoverData={'points': [
-                                    {'group': False, 'pointNumber': 5, 'label': 'Água para consumo humano: 93.5',
+                                    {'group': False, 'pointNumber': 5, 'label': 'Drinking Water: 93.5',
                                      'color': '#ccbbaf',
                                      'index': 5, 'value': 93.5, 'depth': 0, 'height': 3, 'x0': 0, 'x1': 30,
                                      'y0': 2.433608869978343e-13,
@@ -855,7 +858,7 @@ bal_container = html.Div([
                     [
                         dbc.Col(html.Hr(), style={'width': 'inherit'}, width=2, align="center", className='blurb'),
 
-                        dbc.Col(html.H6('Variação Anual dos Diferentes Fluxos de Água', style=TITLE_STYLE), lg=6,
+                        dbc.Col(html.H6('Anual Variation of Different Water Flow', style=TITLE_STYLE), lg=6,
                                 align='center'),
 
                         dbc.Col(html.Hr(), style={'width': 'inherit'}, width=2, align="center", className='blurb'),
@@ -863,13 +866,13 @@ bal_container = html.Div([
                     ], justify="center"),
 
                 dbc.Row([
-                    dbc.Col(dcc.Markdown('''**Filtrar por fluxo de água:**'''), lg=2, align="center",
+                    dbc.Col(dcc.Markdown('''**Select water flow:**'''), lg=2, align="center",
                             style={'font-family': family_generico, 'font-style': 'italic'}, className='textbl'),
                     dbc.Col(
                         dcc.RadioItems(
                             options=[
-                                {"label": "Todos", "value": "Todos"},
-                                {"label": "Personalizado", "value": "Personalizado"},
+                                {"label": "Select All", "value": "Todos"},
+                                {"label": "Custom", "value": "Personalizado"},
                                 # {"label": "Total", "value": "Total", 'disabled': True},
                             ],
                             value="Personalizado",
@@ -885,7 +888,7 @@ bal_container = html.Div([
                     dbc.Col(
                         dcc.Dropdown(
 
-                            value=["Entrega a outros municípios"],
+                            value=["Delivery to other municipalities"],
                             id='drop-bal',
                             clearable=False,
                             multi=True,
@@ -898,6 +901,7 @@ bal_container = html.Div([
     ),
 
 ])
+
 tab_balanco = html.Div([
     dbc.Row([
         dbc.Col(html.Div(side_bar_bal, style={'textAlign': 'center'}), className='pretty_container', md=3,
@@ -905,7 +909,7 @@ tab_balanco = html.Div([
         dbc.Col(bal_container, className='pretty_container eight columns',
                 style={"padding": "0% 1% 1% 1%", "margin-left": "1%"})
     ], justify='start'), modal_bal,
-    html.Div(html.P('Dados disponibilizados pela EPAL e pela Águas do Tejo Atlântico (ADTA).',
+    html.Div(html.P('Data made available by EPAL and Águas do Tejo Atlântico (ADTA).',
                     style=INSTRUCTION_STYLE_left))
 ], style={'margin-top': '0.8%'})
 
@@ -933,9 +937,9 @@ info_button_ar = html.Div(
     [
         html.I(className="fas fa-question-circle fa-sm", id="target_ar"),
         dbc.Tooltip(
-            "A água residual do Concelho de Lisboa é tratada pelos Subsistemas de Alcântara, Beirolas, Chelas e Frielas. "
-            "Estas estações recebem também afluentes provenientes de outros concelhos vizinhos (Amadora, Loures, Odivelas, Oeiras, Sintra e Vila Franca de Xira). "
-            "Não se apresenta aqui a ETAR de Frielas pois esta não faz parte do Concelho de Lisboa.",
+            "Wastewater in Lisbon municipality is treated in Alcântara, Beirolas, Chelas and Frielas treatment plants. "
+            "Those WWTP receive also wastewater coming from neighbouring municipalities (Amadora, Loures, Odivelas, Oeiras, Sintra and Vila Franca de Xira). "
+            "Frielas wastewater treatment plant is not represented here, because it's not part of Lisbon municipality.",
             target="target_ar",
             style={'font-size': '1.4rem'}),
     ],
@@ -952,7 +956,7 @@ download_button_ar = html.Div(
             id='link-dummy'
         ),
         dbc.Tooltip(
-            "Download das águas residuais tratadas e reutilizadas em Lisboa (.xlsx).",
+            "Treated and reclaimed wastewater in Lisbon (.xlsx).",
             target="target-ar", style={'font-size': '1.4rem'}),
     ],
 
@@ -986,8 +990,10 @@ ar_1_container = html.Div([
 info_button_ar_2 = html.Div(
     [
         html.I(className="fas fa-question-circle fa-sm", id="target_ar2"),
-        dbc.Tooltip("A Águas do Tejo Atlântico (AdTA) é a entidade que recolhe e trata as águas residuais de Lisboa, "
-                    "promove a sua reutilização dentro das próprias ETAR e fornece parte dessa água às Juntas de Freguesia e à Câmara Municipal de Lisboa.",
+        dbc.Tooltip(
+            "Águas do Tejo Atlântico (AdTA) is responsible for collecting and treating Lisbon wastewater, "
+            "reuses it inside the treatment plants and provides some of that water to parish councils and the municipality of Lisbon.",
+
                     target="target_ar2",
                     style={'font-size': '1.4rem'}),
     ],
@@ -1006,11 +1012,12 @@ collapse_ar_2 = html.Div(
         dbc.Collapse(
             dbc.Card(dbc.CardBody(
                 dcc.Markdown('''
-                _Atendendo à tipologia de ocupação urbana, os potenciais usos identificados para a reutilização na área de concessão da AdTA são os seguintes:_
-                * _irrigação na agricultura, para rega de diferentes tipos de culturas em campo aberto ou em estufas;_
-                * _irrigação paisagística, para jardins, parques, campos de golfe, áreas residenciais e comerciais e, de um modo geral, em áreas verdes;_
-                * _reutilização na indústria, para circuitos de arrefecimento, caldeiras, água de processo e construção civil;_
-                * _usos urbanos não potáveis, para a proteção contra incêndios, limpeza de ruas e sanitários e aparelhos de ar condicionado._
+                Given
+                _According to urban occupation typology, the potential uses identified for reclaimed water in the AdTA concession area are as follows: _
+                * _agriculture, for different types of crops irrigation, in open field or in greenhouses;
+                * _ landscape irrigation for gardens, parks, golf courses, residential and commercial areas and green areas;
+                * _ reuse in industry for cooling circuits, boilers, process water and construction;
+                * _ non-drinkable urban uses for fire protection, street cleaning and air conditioners._
                 '''),
 
                 id='info-ar2'),
@@ -1020,19 +1027,20 @@ collapse_ar_2 = html.Div(
         ),
     ], style={'font-family': family_generico, 'margin-bottom': '2%'},
 )
+
 ar_2_container = html.Div(
     [dbc.Row([
         dbc.Col(html.Hr(), style={'width': 'inherit'}, width=2, align="center", className='blurb'),
         dbc.Col(dbc.Row(
-            [html.H6("Evolução anual de água tratada e reutilizada em Lisboa", style=TITLE_STYLE), info_button_ar_2],
+            [html.H6("Annual evolution of treated and reclaimed water in Lisbon", style=TITLE_STYLE), info_button_ar_2],
             align="center", justify="center", no_gutters=True), md=8, align="center"),
         dbc.Col(html.Hr(), style={'width': 'inherit'}, width=2, align="center", className='blurb'),
 
     ], justify='center'),
         dbc.Row([
-            dbc.Col(dcc.Markdown('''**Filtrar por tipo de fluxo:**'''), align="center", width=6,
+            dbc.Col(dcc.Markdown('''**Select water flow:**'''), align="center", width=6,
                     style=INSTRUCTION_STYLE_center, className='blurb3'),
-            dbc.Col(dcc.Markdown('''**Personalizar:**'''), align="center", width={"size": 6},
+            dbc.Col(dcc.Markdown('''**Custom:**'''), align="center", width={"size": 6},
                     style=INSTRUCTION_STYLE_center, className='blurb3'),
 
         ], justify='center', align="start", no_gutters=True),
@@ -1040,12 +1048,12 @@ ar_2_container = html.Div(
             dbc.Col(
                 dcc.RadioItems(
                     options=[
-                        {"label": "Águas Tratadas", "value": "Águas Tratadas"},
-                        {"label": "Total - Água Tratada", "value": "Total1"},
-                        {"label": "Águas Reutilizadas", "value": "Águas Reutilizadas"},
-                        {"label": "Total - Água Reutilizada", "value": "Total2"},
-                        {"label": "Personalizado", "value": "Personalizado"},
-                        {"label": "Seleccionar Tudo", "value": "Todas"},
+                        {"label": "Treated Water", "value": "Águas Tratadas"},
+                        {"label": "Total - Treated Water", "value": "Total1"},
+                        {"label": "Reclaimed Water", "value": "Águas Reutilizadas"},
+                        {"label": "Total - Reclaimed Water", "value": "Total2"},
+                        {"label": "Custom", "value": "Personalizado"},
+                        {"label": "Select All", "value": "Todas"},
                     ],
                     # labelStyle={"margin-right": "0.5%"},
                     # switch=True,
@@ -1097,18 +1105,18 @@ tab_residuais = html.Div([
             style={"padding": "0% 1% 1% 1%", "margin-left": "1%", "margin-top": "1%"}),
 
     ]), modal_ar,
-    html.Div(html.P('Dados disponibilizados pela EPAL e pela Águas do Tejo Atlântico (ADTA).',
+    html.Div(html.P('Data made available by EPAL and Águas do Tejo Atlântico (ADTA).',
                     style=INSTRUCTION_STYLE_left)),
     html.Div('escondido', id='escondido', style={'display': 'none'})
 ]),
 
 tabs = dbc.Tabs(
     [
-        dbc.Tab(label="Consumo de Água", tab_id='tab-consumo', label_style={'font-family': family_generico},
+        dbc.Tab(label="Water Consumption", tab_id='tab-consumo', label_style={'font-family': family_generico},
                 tab_style={"margin-left": "0%"}),
-        dbc.Tab(label="Águas Residuais", tab_id='tab-residuais', label_style={'font-family': family_generico},
+        dbc.Tab(label="Wastewater", tab_id='tab-residuais', label_style={'font-family': family_generico},
                 tab_style={"margin-left": "0%"}),
-        dbc.Tab(label="Balanço de Água", tab_id='tab-balanco', label_style={'font-family': family_generico},
+        dbc.Tab(label="Water Balannce", tab_id='tab-balanco', label_style={'font-family': family_generico},
                 tab_style={"margin-left": "0%"}),
 
     ],
@@ -1135,26 +1143,26 @@ def download(path):
     """Serve a file from the upload directory."""
     return send_from_directory("data", path, as_attachment=True)
 
-
-app.index_string = '''
-<!DOCTYPE html>
-<html>
-    <head>
-        {%metas%}
-        <title>Matriz de Água</title>
-        {%favicon%}
-        {%css%}
-    </head>
-    <body>
-        {%app_entry%}
-        <footer>
-            {%config%}
-            {%scripts%}
-            {%renderer%}
-        </footer>
-    </body>
-</html>
-'''
+#
+# app.index_string = '''
+# <!DOCTYPE html>
+# <html>
+#     <head>
+#         {%metas%}
+#         <title>Matriz de Água</title>
+#         {%favicon%}
+#         {%css%}
+#     </head>
+#     <body>
+#         {%app_entry%}
+#         <footer>
+#             {%config%}
+#             {%scripts%}
+#             {%renderer%}
+#         </footer>
+#     </body>
+# </html>
+# '''
 
 app.layout = html.Div([
 
@@ -1392,16 +1400,16 @@ def create_ano_bar_graph(df, ano_select, per_capita):
 
         df['pop'] = populacao
         df['Total'] = (df['Total'] * 1000000) / df['pop'] / dias
-        text_un = ' l/dia per capita'
+        text_un = ' l/day per capita'
 
-        text_hover = ['Total: ' + '{:.0f}'.format(tr) + text_un + '<br>Ano: ' + '{}'.format(an)
+        text_hover = ['Total: ' + '{:.0f}'.format(tr) + text_un + '<br>Year: ' + '{}'.format(an)
                       for tr, an in zip(list(df['Total']), list(df.index))]
 
         text_write = ['{:.0f}'.format(tr)
                       for tr in list(df['Total'])]
     else:
 
-        text_hover = ['Total: ' + '{:.2f}'.format(tr / 1000) + unidade_1 + '<br>Ano: ' + '{}'.format(an)
+        text_hover = ['Total: ' + '{:.2f}'.format(tr / 1000) + unidade_1 + '<br>Year: ' + '{}'.format(an)
                       for tr, an in zip(list(df['Total']), list(df.index))]
 
         text_write = ['{:.0f}'.format(tr / 1000) + "M"
@@ -1466,9 +1474,9 @@ def update_ano_bar_cons(at, ano_mem, per_capita):
     # print(ano)
     df = copy.deepcopy(sector_df)
     if per_capita == 2:
-        title = 'Consumo Médio Diário de Água em Lisboa (l/dia per capita)'
+        title = 'Average Daily water Consumption in Lisbon (l/day per capita)'
     else:
-        title = 'Consumo Total Anual de Água, em Lisboa ({})'.format(unidade)
+        title = 'Total Anual Water Consumption, in Lisbon ({})'.format(unidade)
 
     return title, create_ano_bar_graph(df, ano, per_capita)
 
@@ -1500,7 +1508,7 @@ def update_ano_bar_bal(at, ano_mem):
     except (ValueError, TypeError) as e:
         ano = anos_bal[-1]
     df = bal_potavel_df
-    df = df.loc[df['Ordem'] == 'Água consumida em Lisboa', 'value'].to_frame()
+    df = df.loc[df['Ordem'] == 'Water consumed in Lisbon', 'value'].to_frame()
     df = df.rename({'value': 'Total'}, axis='columns')
     df = df * 1000
 
@@ -1533,9 +1541,9 @@ def update_ano_bar_ar(at, ano_mem):
     except (ValueError, TypeError) as e:
         ano = anos_ar[-1]
     df = aguas_r_df
-    bad_df = df.Subsistema.isin(['Total'])
+    bad_df = df.Plant.isin(['Total'])
     df = df[~bad_df]
-    df = df.loc[df.Subsistema == 'Total - Água Tratada', 'Total'].to_frame()
+    df = df.loc[df.Plant == 'Total - Treated Water', 'Total'].to_frame()
     df = df * 1000
     fig = create_ano_bar_graph(df, ano, 1)
     fig.update_layout(xaxis_tickangle=-80)
@@ -1578,54 +1586,54 @@ def update_bar_freguesias(ano_mem, drop_select, at):
         # text_alert = "Ausência de dados para {}".format(str(ano_select))
         return None, {'visibility': 'hidden'}, None, {'visibility': 'hidden'}, {}
 
-    df = df_fregs[df_fregs['Ano'] == ano_select]
+    df = df_fregs[df_fregs['Year'] == ano_select]
 
     if drop_select == 'consumo_dom':
         df = df.sort_values('Consumo_dom')
         values = df['Consumo_dom']
         my_text_show = ['{:.2f}'.format(cons / 1000000) + unidade_1 for cons in list(values)]
 
-        text_hover = ['<span style="font-weight:bold">Freguesia: ' + '{}'.format(freguesias) + '</span>' +
-                      '<br>Consumo Doméstico: ' + '{:.2f}'.format(cons / 1000000) + unidade_1
+        text_hover = ['<span style="font-weight:bold">Parish Council: ' + '{}'.format(freguesias) + '</span>' +
+                      '<br>Domestic Consumption: ' + '{:.2f}'.format(cons / 1000000) + unidade_1
                       for freguesias, cons in
                       zip(list(df['Freguesias']), values)]
 
-        title_1 = "Consumo Doméstico de Água Potável, "
+        title_1 = "Drinking Water Domestic Consumption, "
 
     elif drop_select == 'consumo_total':
         df = df.sort_values('Consumo_total')
         values = df['Consumo_total']
         my_text_show = ['{:.2f}'.format(cons / 1000000) + unidade_1 for cons in list(values)]
 
-        text_hover = ['<span style="font-weight:bold">Freguesia: ' + '{}'.format(freguesias) + '</span>' +
-                      '<br>Consumo Total: ' + '{:.2f}'.format(cons / 1000000) + unidade_1
+        text_hover = ['<span style="font-weight:bold">Parish Council: ' + '{}'.format(freguesias) + '</span>' +
+                      '<br>Total Consumption: ' + '{:.2f}'.format(cons / 1000000) + unidade_1
                       for freguesias, cons in
                       zip(list(df['Freguesias']), values)]
 
-        title_1 = "Consumo de Água Potável, "
+        title_1 = "Drinking Water Consumption, "
 
     elif drop_select == "contadores":
         df = df.sort_values('N_contadores')
         values = df['N_contadores']
         my_text_show = list(values)
 
-        text_hover = ['<span style="font-weight:bold">Freguesia: ' + '{}'.format(freguesias) + '</span>' +
-                      '<br>Nº contadores: ' + '{}'.format(cont)
+        text_hover = ['<span style="font-weight:bold">Parish Council: ' + '{}'.format(freguesias) + '</span>' +
+                      '<br>Nr water meters: ' + '{}'.format(cont)
                       for freguesias, cont in
                       zip(list(df['Freguesias']), values)]
-        title_1 = "Número de Contadores, "
+        title_1 = "Number of water meters, "
 
     else:
         df = df.sort_values('N_smartmeters')
         values = df['N_smartmeters']
         my_text_show = list(values)
 
-        text_hover = ['<span style="font-weight:bold">Freguesia: ' + '{}'.format(freguesias) + '</span>' +
-                      '<br>Nº smartmeters: ' + '{}'.format(smart)
+        text_hover = ['<span style="font-weight:bold">Parish Council: ' + '{}'.format(freguesias) + '</span>' +
+                      '<br>Nr smartmeters: ' + '{}'.format(smart)
                       for freguesias, smart in
                       zip(list(df['Freguesias']), values)]
 
-        title_1 = "Número de Smartmeters, "
+        title_1 = "Number of Smartmeters, "
 
     # values = values/sum(values)
 
@@ -1656,11 +1664,13 @@ def update_bar_freguesias(ano_mem, drop_select, at):
 
     fig.update_layout(layout_freg)
 
-    title_bar = title_1 + "por Freguesia, em {}".format(ano_select)
+    title_bar = title_1 + "per Parish Council, em {}".format(ano_select)
 
-    text_freg = dcc.Markdown('''
-        No ano {0} estavam instalados pela EPAL **{1}** smartmeters em comparação com o número total de contadores, **{2}**, o que equivale a cerca de **{3}%**.
+    text_freg = dcc.Markdown(
 
+
+        '''
+        In {0} there where **{1}** smarmeters instaled by EPAL and a total number of water meters of **{2}**, which corresponds to **{3}%**.
 
     '''.format(ano_select, df.N_smartmeters.sum(), df.N_smartmeters.sum() + df.N_contadores.sum(),
                round(df.N_smartmeters.sum() / (df.N_smartmeters.sum() + df.N_contadores.sum()) * 100)))
@@ -1691,10 +1701,10 @@ def update_mapa_freguesias(ano_mem, drop_select, at):
     except (ValueError, TypeError) as e:
         ano_select = anos_cons[-1]
     if ano_select < 2017:
-        text_alert = "Ausência de dados para {}".format(str(ano_select))
+        text_alert = "Missing data for {}".format(str(ano_select))
         return {'visibility': 'hidden'}, {'visibility': 'hidden'}, text_alert, True, {}
 
-    df = df_fregs.loc[df_fregs['Ano'] == ano_select].copy()
+    df = df_fregs.loc[df_fregs['Year'] == ano_select].copy()
     df['id'] = list(range(1, len(df) + 1))
     df['id'] = [str(i).zfill(2) for i in df['id']]
 
@@ -1732,12 +1742,12 @@ def update_mapa_freguesias(ano_mem, drop_select, at):
         title_bar = 'Smartmeters'
         cl_scale = cl_scale_blues
 
-    text_hover = ['<span style="font-weight:bold">Freguesia: ' + '{}'.format(freguesias) + '</span>' +
-                  '<br>Ano: ' + '{}'.format(ano_select) +
-                  "<br>Consumo Total: " + '{:.2f}'.format(consumo_tot) + unidade_1 +
-                  "<br>Consumo Doméstico: " + '{:.2f}'.format(consumo_dom) + unidade_1 +
-                  '<br>Nº contadores: ' + '{:.0f}'.format(contador) +
-                  '<br>Nº smartmeters: ' + '{:.0f}'.format(smartmeter)
+    text_hover = ['<span style="font-weight:bold">Parish Council: ' + '{}'.format(freguesias) + '</span>' +
+                  '<br>Year: ' + '{}'.format(ano_select) +
+                  "<br>Total Consumption: " + '{:.2f}'.format(consumo_tot) + unidade_1 +
+                  "<br>Domestic Consumption: " + '{:.2f}'.format(consumo_dom) + unidade_1 +
+                  '<br>Nr water meters: ' + '{:.0f}'.format(contador) +
+                  '<br>Nr smartmeters: ' + '{:.0f}'.format(smartmeter)
                   for freguesias, consumo_tot, consumo_dom, contador, smartmeter in
                   zip(list(df['Freguesias']), consumo_simp_total, consumo_simp_dom, list(df['N_contadores']),
                       list(df['N_smartmeters']))]
@@ -1907,7 +1917,7 @@ def update_donut(ano_mem, drop_cons):
         df['color_fill'] = df['labels'].apply(lambda x: color_sector_dead_d[x])
         df['color_line'] = df['labels'].apply(lambda x: color_sector_live_d[x])
 
-        my_text_hover = [lab + ': ' + '{:.1f}'.format(val) + unidade_1 + '<br>Ano: ' + '{}'.format(ano_select)
+        my_text_hover = [lab + ': ' + '{:.1f}'.format(val) + unidade_1 + '<br>Year: ' + '{}'.format(ano_select)
                          for lab, val in zip(df.index.tolist(), list(df[ano_select]))]
 
         fig = go.Figure(data=[go.Pie(labels=df.index.tolist(),
@@ -1920,11 +1930,12 @@ def update_donut(ano_mem, drop_cons):
                                      hoverlabel=dict(font=dict(family=layout['font']['family'])),
                                      opacity=0.8,
                                      sort=False)])
-        title_donut = "Consumo por Sector de Consumo, em {}".format(ano_select)
+        title_donut = "Consumption per Sector, in {}".format(ano_select)
         text_info = dcc.Markdown('''
-        _No ano de 2014, na sequência da reorganização administrativa 
-        da cidade de Lisboa, houve transferência da titularidade de contratos da CML (Câmara Municipal de Lisboa)
-         para as Juntas de Freguesia, designados de Delegação CML, o que causou o aumento dos consumos das Juntas._
+        
+        _In 2014, following the administrative reorganization
+        in Lisbon, ownership of contracts of the CML (Lisbon City Council) where transfered
+         to Parish Councils, which caused the increase in water consumption in the Councils._
          ''')
 
 
@@ -1938,7 +1949,7 @@ def update_donut(ano_mem, drop_cons):
         df['color_line'] = df['labels'].apply(lambda x: color_ndom_live_d[x])
         df['Percentagem'] = df[ano_select] / (df[ano_select].sum()) * 100
 
-        my_text_hover = [lab + ': ' + '{:.1f}'.format(val) + unidade_1 + '<br>Ano: ' + '{}'.format(ano_select)
+        my_text_hover = [lab + ': ' + '{:.1f}'.format(val) + unidade_1 + '<br>Year: ' + '{}'.format(ano_select)
                          for lab, val in zip(df.index.tolist(), list(df[ano_select]))]
 
         my_text_show = [nom + " (" + '{:.0f}'.format(pr) + '%)' for nom, pr in
@@ -1959,17 +1970,17 @@ def update_donut(ano_mem, drop_cons):
             textposition='auto'
 
         )])
-        fig.update_xaxes(title_text="Milhões de {}".format(unidade))
-        title_donut = "Consumo Não Doméstico , em {}".format(ano_select)
+        fig.update_xaxes(title_text="Millions of {}".format(unidade))
+        title_donut = "Non-Domestic Consumption , in {}".format(ano_select)
         percentagem = round(perc_ndom[ano_select], 1)
         text_info = dcc.Markdown('''
-        * _O consumo não doméstico na cidade de Lisboa em **{0}** representa **{1}%** do consumo total na cidade (excluindo as perdas económicas)._ 
-        * _O **Consumo Habitacional** diz respeito a consumos de alojamento em habitações municipais, 
-         consumos de água nas residências de estudantes e consumos nos domicílios de embaixadores. 
-         Ou seja, apesar dos contratos serem feitos com empresas ou entidades públicas, a água 
-         é utilizada para fins habitacionais._
-         * _A categoria **Outros** refere-se aos consumos de água destinados a atividades desportivas, 
-         Lares e Centros de dia/Recolhimento, Estabelecimentos prisionais, etc._
+        * _Non-domestic consumption in Lisbon in **{0}** represents **{1}%** of total consumption in the city (excluding economic losses) ._
+        * _**Housing Consumption** refers to housing consumption in municipal housing,
+         water consumption in student residences and consumption in ambassadors' homes.
+         Although the contracts are made with companies or public entities, the water
+         is used for housing purposes._
+         * _The ** Other ** category refers to water consumed in sports,
+         Day Care / Retirement Homes, Prisons, etc._
          '''.format(ano_select, percentagem))
         pos_annot = [[0.09, 0.076], [0.092, 0.076], [0.11, 0.076], [0.168, 0.076], [0.205, 0.076], [0.2222, 0.27]]
 
@@ -2029,20 +2040,20 @@ def update_ano_line_drop(at, drop_cons, selector, current_drop_cons):
         if selector == 'Todos':
             value = sector_df.columns.to_list()
         elif selector == 'Personalizado':
-            value = ['Doméstico']
+            value = ['Domestic']
         elif selector == 'Total':
             value = ['Total']
         else:
             value = []
-        if 'Doméstico' in current_drop_cons:
-            value = value + ['Doméstico Per Capita']
+        if 'Domestic' in current_drop_cons:
+            value = value + ['Domestic Per Capita']
     else:
 
         items = ndom_options
         if selector == 'Todos':
             value = ndom_df.columns.to_list()
         elif selector == 'Personalizado':
-            value = ["CML  + Delegações CML"]
+            value = ["Lisbon Municipality + Delegations"]
         elif selector == 'Total':
             value = ['Total']
         else:
@@ -2069,7 +2080,7 @@ def update_ano_line(drop_tipo, at, drop_cons):
 
     if drop_cons == "consumo_sector":
         df = copy.deepcopy(sector_df)
-        df['Doméstico Per Capita'] = df['Doméstico'] * 1000 / populacao
+        df['Domestic Per Capita'] = df['Domestic'] * 1000 / populacao
         if not all(elem in df.columns.to_list() for elem in drop_tipo):
             raise PreventUpdate
 
@@ -2077,8 +2088,8 @@ def update_ano_line(drop_tipo, at, drop_cons):
         lista_index = list(df.sum().sort_values().index)
         color_line = [color_sector_live_d[x] for x in lista_index]
         color_fill = [color_sector_dead_d[x] for x in lista_index]
-        title = "Consumo Anual, por Sector de Consumo"
-        sector_tipo_inst = dcc.Markdown('''**Filtrar por sector:**''')
+        title = "Annual Water Consumption, per sector"
+        sector_tipo_inst = dcc.Markdown('''**Select by sector:**''')
 
     else:
         if not all(elem in ndom_df.columns.to_list() for elem in drop_tipo):
@@ -2089,11 +2100,11 @@ def update_ano_line(drop_tipo, at, drop_cons):
         lista_index = list(df.sum().sort_values().index)
         color_line = [color_ndom_live_d[x] for x in lista_index]
         color_fill = [color_ndom_dead_d[x] for x in lista_index]
-        title = "Consumo Não Doméstico Anual"
-        sector_tipo_inst = "Filtrar por tipo de utilização:"
+        title = "Non-domestic annual water consumption"
+        sector_tipo_inst = "Select by usage type:"
 
     layout_ano_line = copy.deepcopy(layout)
-    if 'Doméstico Per Capita' in drop_tipo:
+    if 'Domestic Per Capita' in drop_tipo:
         fig = make_subplots(specs=[[{"secondary_y": True}]])
     else:
         fig = go.Figure()
@@ -2103,10 +2114,10 @@ def update_ano_line(drop_tipo, at, drop_cons):
     minimos = []
     maximos = []
     for trace in lista_index:
-        if trace == 'Doméstico Per Capita':
+        if trace == 'Domestic Per Capita':
 
             df[trace] = df[trace] * 1000
-            my_text = [trace + ': ' + '{:.1f}'.format(tr) + unidade + ' per capita' + "<br>Ano: " + str(ano) for
+            my_text = [trace + ': ' + '{:.1f}'.format(tr) + unidade + ' per capita' + "<br>Year: " + str(ano) for
                        tr, ano in zip(list(df[trace]), anos)]
             df_trace = df[[trace]]
             # minimo = min(df_trace)
@@ -2142,7 +2153,7 @@ def update_ano_line(drop_tipo, at, drop_cons):
             i += 1
 
         else:
-            my_text = [trace + ': ' + '{:.1f}'.format(tr) + unidade_1 + "<br>Ano: " + str(ano) for tr, ano in
+            my_text = [trace + ': ' + '{:.1f}'.format(tr) + unidade_1 + "<br>Year: " + str(ano) for tr, ano in
                        zip(list(df[trace]), anos)]
 
             df_trace = df[[trace]]
@@ -2213,13 +2224,13 @@ def update_ano_line(drop_tipo, at, drop_cons):
     # , range = y_span
     fig.update_layout(layout_ano_line)
 
-    if 'Doméstico Per Capita' in drop_tipo:
-        fig.update_yaxes(title_text="Milhões de {}".format(unidade), showgrid=True, range=y_span, gridcolor="#E0E1DF",
+    if 'Domestic Per Capita' in drop_tipo:
+        fig.update_yaxes(title_text="Millions {}".format(unidade), showgrid=True, range=y_span, gridcolor="#E0E1DF",
                          secondary_y=False)
         fig.update_yaxes(title_text="{} per capita".format(unidade), showgrid=True,
                          secondary_y=True, overlaying='y1', range=[50.6, 55.39])
     else:
-        fig.update_yaxes(title_text="Milhões de {}".format(unidade), showgrid=True, gridcolor="#E0E1DF")
+        fig.update_yaxes(title_text="Millions {}".format(unidade), showgrid=True, gridcolor="#E0E1DF")
 
     fig.update_xaxes(showgrid=False)
     # fig.show()
@@ -2244,7 +2255,7 @@ def update_bal_drop(at, selector):
     if selector == 'Todos':
         value = list(bal_potavel_df.Ordem.unique())
     elif selector == 'Personalizado':
-        value = ['Água consumida em Lisboa']
+        value = ['Water consumed in Lisbon']
 
     # elif selector == 'Total':
     #     value = ['Total']
@@ -2281,7 +2292,7 @@ def update_timeseries(drop_bal):
 
     i = 0
     for trace in lista_index:
-        my_text = [trace + ': ' + '{:.0f}'.format(tr) + unidade_1 + "<br>Ano: " + str(ano) for tr, ano in
+        my_text = [trace + ': ' + '{:.0f}'.format(tr) + unidade_1 + "<br>Year: " + str(ano) for tr, ano in
                    zip(list(df[trace]), anos)]
         fig.add_trace(
             go.Scatter(
@@ -2322,7 +2333,7 @@ def update_timeseries(drop_bal):
     fig.update_layout(layout_timeseries, showlegend=True)
 
     fig.update_xaxes(showgrid=False)
-    fig.update_yaxes(title_text="Milhões de {}".format(unidade), showgrid=True, gridcolor="#E0E1DF")
+    fig.update_yaxes(title_text="Millions {}".format(unidade), showgrid=True, gridcolor="#E0E1DF")
     fig.update_layout(margin={"r": 10, "t": 10, "l": 10, "b": 10})
 
     return fig
@@ -2397,7 +2408,7 @@ def update_balanco(ano_mem, at):
 
     fig.update_layout(layout_balanco)
 
-    title = "Balanço de Água em Lisboa, em {}".format(ano_select)
+    title = "Water Balance in Lisbon, in {}".format(ano_select)
 
     # fig.show()
     return title, fig
@@ -2423,13 +2434,13 @@ def update_ar_drop(at, selector):
     elif selector == 'Personalizado':
         value = ['Alcântara']
     elif selector == 'Águas Tratadas':
-        value = list(aguas_r_df.Subsistema.unique())
+        value = list(aguas_r_df.Plant.unique())
     elif selector == 'Águas Reutilizadas':
-        value = list(ar_reu_df.Subsistema.unique())
+        value = list(ar_reu_df.Plant.unique())
     elif selector == 'Total1':
-        value = ['Total - Água Tratada']
+        value = ['Total - Treated Water']
     elif selector == 'Total2':
-        value = ['Total - Água Reutilizada']
+        value = ['Total - Reclaimed Water']
     else:
         value = []
 
@@ -2455,30 +2466,30 @@ def update_ar_timeseries(drop_ar, at):
     if isinstance(drop_ar, str):
         drop_ar = [drop_ar]
 
-    df = df.loc[df['Subsistema'].isin(drop_ar)]
+    df = df.loc[df['Plant'].isin(drop_ar)]
 
-    lista_subs = list(df.Subsistema.unique())
+    lista_subs = list(df.Plant.unique())
 
     color_line = [color_ar_live_d[x] for x in lista_subs]
     color_fill = [color_ar_dead_d[x] for x in lista_subs]
 
     anos = df.index.unique().tolist()
 
-    if all(elem in ar_reu_df.Subsistema.unique() for elem in drop_ar):
+    if all(elem in ar_reu_df.Plant.unique() for elem in drop_ar):
         df.assign(quantity=df.Total.mul(1000))
         unidade_temp = unidade_1
-        title = "Milhões de " + unidade
+        title = "Millions " + unidade
     else:
         unidade_temp = unidade_1
-        title = "Milhões de " + unidade
+        title = "Millions " + unidade
 
     fig = go.Figure()
     i = 0
     minimos = []
     maximos = []
     for trace in lista_subs:
-        df_sub = df[df['Subsistema'] == trace]
-        my_text = [trace + ': ' + '{:.2f}'.format(tr) + unidade_temp + "<br>Ano: " + str(ano) for tr, ano in
+        df_sub = df[df['Plant'] == trace]
+        my_text = [trace + ': ' + '{:.2f}'.format(tr) + unidade_temp + "<br>Year: " + str(ano) for tr, ano in
                    zip(list(df_sub['Total']), anos)]
 
         minimo = min(df_sub['Total'].tolist())
@@ -2489,7 +2500,7 @@ def update_ar_timeseries(drop_ar, at):
         if False in (df_sub['Total'].T != 0.0).tolist():
             df_sub = df_sub.replace(0, np.nan).copy()
 
-        if trace in ar_reu_df.Subsistema.unique():
+        if trace in ar_reu_df.Plant.unique():
             line1 = dict(
                 shape="spline",
                 smoothing=1,
@@ -2510,7 +2521,7 @@ def update_ar_timeseries(drop_ar, at):
             go.Scatter(
                 x=anos,
                 y=df_sub['Total'],
-                name=df_sub.Subsistema.unique()[0],
+                name=df_sub.Plant.unique()[0],
                 mode='lines+markers',
                 hovertext=my_text, hoverinfo="text",
                 hoverlabel=dict(bgcolor=color_fill[i]),
@@ -2575,33 +2586,33 @@ def update_bar_ar(ano_mem, at):
 
     layout_bar_ar = copy.deepcopy(layout)
     df = aguas_r_df[aguas_r_df.index == ano_select]
-    bad_df = df.Subsistema.isin(['Total'])
+    bad_df = df.Plant.isin(['Total'])
     df = df[~bad_df]
     df = df[(df['Total'].T != 0)]
-    df = df.loc[df.Subsistema != 'Total - Água Tratada', :]
-    # df['lis_perc'] = df['Lisboa']/df['Total']*100
+    df = df.loc[df.Plant != 'Total - Treated Water', :]
+    # df['lis_perc'] = df['Lisbon']/df['Total']*100
     # df['out_perc'] = df['Outros Concelhos']/df['Total']*100
     df = df.replace(0, np.nan)
     my_text_hover_lis = [
-        '{:.2f}'.format(val) + unidade_1 + " (" + '{:.1f}'.format(perc) + "%)" + '<br>Ano: ' + str(ano_select) for
+        '{:.2f}'.format(val) + unidade_1 + " (" + '{:.1f}'.format(perc) + "%)" + '<br>Year: ' + str(ano_select) for
         val, perc in
-        zip(list(df['Lisboa']), list(df['lis_perc']))]
+        zip(list(df['Lisbon']), list(df['lis_perc']))]
     my_text_hover_out = [
-        '{:.2f}'.format(val) + unidade_1 + " (" + '{:.1f}'.format(perc) + "%)" + '<br>Ano: ' + str(ano_select) for
+        '{:.2f}'.format(val) + unidade_1 + " (" + '{:.1f}'.format(perc) + "%)" + '<br>Year: ' + str(ano_select) for
         val, perc in
-        zip(list(df['Outros Concelhos']), list(df['out_perc']))]
+        zip(list(df['Other Municipalities']), list(df['out_perc']))]
 
     my_text_show_lis = ['{:.0f}'.format(val) + 'M' for val in
-                        list(df['Lisboa'])]
+                        list(df['Lisbon'])]
     my_text_show_out = ['{:.0f}'.format(val) + 'M' for val in
-                        list(df['Outros Concelhos'])]
+                        list(df['Other Municipalities'])]
 
     fig = go.Figure(
         data=[
             go.Bar(
-                x=df.Subsistema,
-                y=df['Lisboa'],
-                name="AR provenientes do Concelho de Lisboa",
+                x=df.Plant,
+                y=df['Lisbon'],
+                name="Wastewater from Lisbon Municipality",
                 marker_color=color_dead[4],
                 marker_line_color=color_live[4],
                 marker_line_width=1.5,
@@ -2612,9 +2623,9 @@ def update_bar_ar(ano_mem, at):
                 hoverlabel=dict(font=dict(family=layout['font']['family']))
             ),
             go.Bar(
-                x=df.Subsistema,
-                y=df['Outros Concelhos'],
-                name="AR provenientes de Outros Concelhos",
+                x=df.Plant,
+                y=df['Other Municipalities'],
+                name="Wastewater from Other Municipalities",
                 marker_color=color_dead[1],
                 marker_line_color=color_live[1],
                 marker_line_width=1.5,
@@ -2627,25 +2638,25 @@ def update_bar_ar(ano_mem, at):
         ]
     )
 
-    altura_int = max(list(df.drop(['Total', 'Subsistema', 'lis_perc', 'out_perc'], axis=1).max(skipna=True)))
+    altura_int = max(list(df.drop(['Total', 'Plant', 'lis_perc', 'out_perc'], axis=1).max(skipna=True)))
 
     fig.update_layout(layout_bar_ar)
     fig.update_layout(legend=dict(x=0.5, y=1.2))
     fig.update_layout(barmode='group', xaxis_tickangle=-45)
     fig.update_yaxes(automargin=True, range=[0, altura_int * 1.15],
-                     autorange=False, fixedrange=True, showticklabels=False, title_text="Milhões de {}".format(unidade))
+                     autorange=False, fixedrange=True, showticklabels=False, title_text="Millions {}".format(unidade))
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     # fig.show()
-    alcantara_perc = round(df.loc[df.Subsistema == 'Alcântara', 'Total'] / df['Total'].sum() * 100, 1).values[0]
-    beirolas_perc = round(df.loc[df.Subsistema == 'Beirolas', 'Total'] / df['Total'].sum() * 100, 1).values[0]
-    chelas_perc = round(df.loc[df.Subsistema == 'Chelas', 'Total'] / df['Total'].sum() * 100, 1).values[0]
+    alcantara_perc = round(df.loc[df.Plant == 'Alcântara', 'Total'] / df['Total'].sum() * 100, 1).values[0]
+    beirolas_perc = round(df.loc[df.Plant == 'Beirolas', 'Total'] / df['Total'].sum() * 100, 1).values[0]
+    chelas_perc = round(df.loc[df.Plant == 'Chelas', 'Total'] / df['Total'].sum() * 100, 1).values[0]
 
-    title = "Águas Residuais (AR) Tratadas, nas ETAR de Lisboa, em {0} ({1})".format(ano_select, unidade)
+    title = "Treated Wastewater, in WWTP of Lisbon, in {0} ({1})".format(ano_select, unidade)
 
-    text_chelas = "ETAR de Chelas ({}%, que apenas trata das águas residuais **produzidas** em Lisboa)".format(
+    text_chelas = "Chelas WWTP ({}%, which receives only waste water **produced** in Lisbon)".format(
         chelas_perc)
-    texto_beirolas = "ETAR de Beirolas ({}%)".format(beirolas_perc)
+    texto_beirolas = "Beirolas WWTP ({}%)".format(beirolas_perc)
 
     if beirolas_perc > chelas_perc:
         text_1 = texto_beirolas
@@ -2653,48 +2664,48 @@ def update_bar_ar(ano_mem, at):
     else:
         text_2 = texto_beirolas
         text_1 = text_chelas
-    texto_col = dcc.Markdown('''
-    _Em {0}, a ETAR de Alcântara foi responsável pelo tratamento e encaminhamento de {1}% das águas residuais **tratadas** em Lisboa, seguindo-se a {2} e a {3}._
-                '''.format(ano_select, alcantara_perc, text_1, text_2))
 
+    texto_col = dcc.Markdown('''
+    _In {0}, Alcântara WWTP was responsible  for treatment and disposal of {1}% of the **treated** waste water in Lisbon, followed by {2} and {3}._
+                '''.format(ano_select, alcantara_perc, text_1, text_2))
     return fig, texto_col, title
 
 
 def legend_on_off(concelho, visivel, memoria):
     if concelho == 0:
-        if memoria['Outros'] == 'off':
+        if memoria['Others'] == 'off':
             if visivel == 'legendonly':
                 # print('Lisboa: Desligado   :::   Outros: Desilgado')
-                memoria['Lisboa'] = 'off'
+                memoria['Lisbon'] = 'off'
             else:
                 # print('Lisboa: Ligado   :::   Outros: Desilgado')
-                memoria['Lisboa'] = 'on'
+                memoria['Lisbon'] = 'on'
         else:
             if visivel == 'legendonly':
                 # print('Lisboa: Desligado   :::   Outros: Ligados')
-                memoria['Lisboa'] = 'off'
+                memoria['Lisbon'] = 'off'
             else:
                 # print('Lisboa: Ligado   :::   Outros: Ligados')
-                memoria['Lisboa'] = 'on'
+                memoria['Lisbon'] = 'on'
 
     elif concelho == 1:
-        if memoria['Lisboa'] == 'off':
+        if memoria['Lisbon'] == 'off':
             if visivel == 'legendonly':
                 # print('Lisboa: Desligado   :::   Outros: Desilgado')
-                memoria['Outros'] = 'off'
+                memoria['Others'] = 'off'
             else:
                 # print('Lisboa: Desligado   :::   Outros: Ligados')
-                memoria['Outros'] = 'on'
+                memoria['Others'] = 'on'
         else:
             if visivel == 'legendonly':
                 # print('Lisboa: Ligado   :::   Outros: Desligado')
-                memoria['Outros'] = 'off'
+                memoria['Others'] = 'off'
             else:
                 # print('Lisboa: Ligado   :::   Outros: Ligados')
-                memoria['Outros'] = 'on'
+                memoria['Others'] = 'on'
     else:
-        memoria['Lisboa'] = 'on'
-        memoria['Outros'] = 'on'
+        memoria['Lisbon'] = 'on'
+        memoria['Others'] = 'on'
 
     return memoria
 
@@ -2733,24 +2744,24 @@ def update_map_ar(ano_mem, at, restyleData, data):
     try:
         memoria = json.loads(data)
     except ValueError:
-        memoria = {'Lisboa': 'on', 'Outros': 'on'}
+        memoria = {'Lisbon': 'on', 'Others': 'on'}
 
     memoria = legend_on_off(concelho, visivel, memoria)
     # print(memoria)
-    bad_df = aguas_r_df.Subsistema.isin(['Total'])
+    bad_df = aguas_r_df.Plant.isin(['Total'])
     aguas_r_dff = aguas_r_df[~bad_df]
-    df['Lisboa'] = aguas_r_dff.loc[aguas_r_dff.index == ano_select, 'Lisboa'].to_list()
-    df['Outros Concelhos'] = aguas_r_dff.loc[aguas_r_dff.index == ano_select, 'Outros Concelhos'].to_list()
+    df['Lisbon'] = aguas_r_dff.loc[aguas_r_dff.index == ano_select, 'Lisbon'].to_list()
+    df['Other Municipalities'] = aguas_r_dff.loc[aguas_r_dff.index == ano_select, 'Other Municipalities'].to_list()
     df['Total'] = aguas_r_dff.loc[aguas_r_dff.index == ano_select, 'Total'].to_list()
     df = df.loc[df.et != 'Frielas', :]
 
-    text_hover_base = ['<span style="font-weight:bold">ETAR</span>: ' + '{}'.format(etar) +
+    text_hover_base = ['<span style="font-weight:bold">WWTP</span>: ' + '{}'.format(etar) +
                        '   |   ' + '<span style="font-weight:bold">Ano</span>: ' + '{}'.format(ano_select) for etar in
                        list(df['et'])]
-    text_hover_lisboa = ["<br>AR Proveniente de Lisboa: " + '{:.2f}'.format(lisboa) + unidade_1 for lisboa in
-                         list(df['Lisboa'])]
-    text_hover_outros = ["<br>AR Proveniente de Outros Concelhos: " + '{:.2f}'.format(outros) + unidade_1 for outros in
-                         list(df['Outros Concelhos'])]
+    text_hover_lisboa = ["<br>Wastewater from Lisbon: " + '{:.2f}'.format(lisboa) + unidade_1 for lisboa in
+                         list(df['Lisbon'])]
+    text_hover_outros = ["<br>Wastewater from Other Municipalities: " + '{:.2f}'.format(outros) + unidade_1 for outros in
+                         list(df['Other Municipalities'])]
     text_hover_total = ["<br>Total: " + '{:.2f}'.format(total) + unidade_1 for total in list(df['Total'])]
 
     # text_hover = ['<span style="font-weight:bold">ETAR</span>: ' + '{}'.format(etar) +
@@ -2762,11 +2773,11 @@ def update_map_ar(ano_mem, at, restyleData, data):
     #               zip(list(df['et']), df['Lisboa'], list(df['Outros Concelhos']),
     #                   list(df['Total']))]
 
-    if memoria['Lisboa'] == 'on':
-        raio_outros = df['Lisboa'] + df['Outros Concelhos']
+    if memoria['Lisbon'] == 'on':
+        raio_outros = df['Lisbon'] + df['Other Municipalities']
         info_out = 'none'
         txt_out = ''
-        if memoria['Outros'] == 'on':
+        if memoria['Others'] == 'on':
             text_hover = [b + l + o + t for b, l, o, t in
                           zip(text_hover_base, text_hover_lisboa, text_hover_outros, text_hover_total)]
             sel = [True, True]
@@ -2774,8 +2785,8 @@ def update_map_ar(ano_mem, at, restyleData, data):
             text_hover = [b + l for b, l in zip(text_hover_base, text_hover_lisboa)]
             sel = [True, False]
     else:
-        raio_outros = df['Outros Concelhos']
-        if memoria['Outros'] == 'on':
+        raio_outros = df['Other Municipalities']
+        if memoria['Others'] == 'on':
             text_hover = [b + o for b, o in
                           zip(text_hover_base, text_hover_outros)]
             sel = [False, True]
@@ -2796,7 +2807,7 @@ def update_map_ar(ano_mem, at, restyleData, data):
         hoverinfo='text',
         showlegend=False,
         hoverlabel=dict(font=layout['font']),
-        marker=dict(size=df['Lisboa'],
+        marker=dict(size=df['Lisbon'],
                     opacity=0.8,
                     sizeref=0.5,
                     sizemin=3,
@@ -2859,5 +2870,5 @@ def update_map_ar(ano_mem, at, restyleData, data):
 
 if __name__ == '__main__':
     # app.run_server(debug=False, port = 5000, host ='0.0.0.0')
-    # app.run_server(debug=True)
     app.run_server(debug=False)
+#     app.run_server(debug=True, port=5000)
