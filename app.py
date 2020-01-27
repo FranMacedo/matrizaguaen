@@ -1116,7 +1116,7 @@ tabs = dbc.Tabs(
                 tab_style={"margin-left": "0%"}),
         dbc.Tab(label="Wastewater", tab_id='tab-residuais', label_style={'font-family': family_generico},
                 tab_style={"margin-left": "0%"}),
-        dbc.Tab(label="Water Balannce", tab_id='tab-balanco', label_style={'font-family': family_generico},
+        dbc.Tab(label="Water Balance", tab_id='tab-balanco', label_style={'font-family': family_generico},
                 tab_style={"margin-left": "0%"}),
 
     ],
