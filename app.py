@@ -322,12 +322,12 @@ def create_modal(tab):
             dbc.Modal(
                 [
                     dbc.ModalHeader("DOWNLOAD DE FICHEIROS - {}".format(header)),
-                    dbc.ModalBody(["Qual o propósito deste download?",
+                    dbc.ModalBody(["What's the purpose of this download?",
                                    dcc.RadioItems(
                                        options=[
-                                           {"label": "Pessoal", "value": 1},
-                                           {"label": "Profissional", "value": 2},
-                                           {"label": "Académico", "value": 3},
+                                           {"label": "Personal", "value": 1},
+                                           {"label": "Professional", "value": 2},
+                                           {"label": "Academic", "value": 3},
                                        ],
                                        # value=1,
                                        id=id_r,
