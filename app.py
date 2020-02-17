@@ -272,8 +272,8 @@ id_c = ['close-consumo', 'close-freg', 'close-ar', 'close-bal']
 id_d = ['download-consumo', 'download-freg', 'download-ar', 'download-bal']
 id_r = ['radio-consumo', 'radio-freg', 'radio-ar', 'radio-bal']
 id_t = ['target-consumo', 'target-freg', 'target-ar', 'target-bal']
-links = ['/download/Consumo_AguaPotavel.xlsx', '/download/Consumo_Freguesias.xlsx',
-         '/download/Aguas_Residuais_e_Reutilizadas.xlsx', '/download/Balanco_Agua_Potavel.xlsx']
+links = ['/download/DrinkingWater.xlsx', '/download/ParishCouncils.xlsx',
+         '/download/WasteWater_ReclaimedWater.xlsx', '/download/WaterBalance.xlsx']
 divs = ['hidden-consumo', 'hidden-freg', 'hidden-ar', 'hidden-bal']
 
 ids_modal = {nom: {
@@ -1141,7 +1141,7 @@ def toggle_collapse(n, is_open):
 @server.route("/download/<path:path>")
 def download(path):
     """Serve a file from the upload directory."""
-    return send_from_directory("data", path, as_attachment=True)
+    return send_from_directory("data/en", path, as_attachment=True)
 
 
 app.index_string = '''
