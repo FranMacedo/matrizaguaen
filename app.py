@@ -321,7 +321,7 @@ def create_modal(tab):
         [
             dbc.Modal(
                 [
-                    dbc.ModalHeader("DOWNLOAD DE FICHEIROS - {}".format(header)),
+                    dbc.ModalHeader("DOWNLOAD - {}".format(header)),
                     dbc.ModalBody(["What's the purpose of this download?",
                                    dcc.RadioItems(
                                        options=[
