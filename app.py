@@ -236,7 +236,7 @@ app.scripts.config.serve_locally = True
 # HEROKU - FALTA ADAPTAR ESTES VALORES
 app.server.config['SECRET_KEY'] = '60b69ea75d65bfc586c4e778a9357219'
 app.server.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'postgres://yibvjryninkbcv:28fce500a912b4a78e6277719ed598082c19543ca5a1c394d235e3fe79f641e9@ec2-54-247-171-30.eu-west-1.compute.amazonaws.com:5432/d2719tk9ncf4kl'
+    'SQLALCHEMY_DATABASE_URI'] = 'postgres://wtzadyokemgmyk:0546f05931523968396b419abb73213f528e107ee632127ffcdabbe20b6d1f62@ec2-54-246-89-234.eu-west-1.compute.amazonaws.com:5432/deevdtte607bes'
 
 app.server.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app.server)
